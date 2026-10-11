@@ -11,6 +11,7 @@ martin-debug-*.txt
 node_modules
 dist
 dist-ssr
+.wrangler/
 *.local
 
 # Editor directories and files

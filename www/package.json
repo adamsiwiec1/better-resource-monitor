@@ -5,10 +5,10 @@
 	"scripts": {
 		"dev": "astro dev",
 		"build": "node --test *.test.mjs && astro build",
-		"preview": "astro build && wrangler pages dev",
+		"preview": "astro build && wrangler pages dev --cwd ..",
 		"astro": "astro",
 		"check": "astro check",
-		"cf-typegen": "wrangler types"
+		"cf-typegen": "wrangler types --config ../wrangler.toml"
 	},
 	"dependencies": {
 		"@astrojs/cloudflare": "^14.3.3",

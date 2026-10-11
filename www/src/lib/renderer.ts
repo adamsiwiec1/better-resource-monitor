@@ -6,16 +6,8 @@ import { join } from "node:path";
 // Design tokens (matching Layout.astro CSS vars)
 export const colors = {
   bg: "#101214",
-  surface: "#171A1D",
-  surfaceAlt: "#22272F",
   brand: "#D14715",
-  brandMuted: "#321D16",
   text: "#F8FAFC",
-  textDim: "#C6CED8",
-  textMuted: "#8993A1",
-  border: "#3A414A",
-  borderStrong: "#566170",
-  chrome: "#0B0D0F",
 };
 
 export const imageBackgroundStyle = {
@@ -25,15 +17,14 @@ export const imageBackgroundStyle = {
   backgroundSize: "56px 56px",
 };
 
-// Font cache — vendored files read once per build
-let fontData: Buffer | null = null;
 const require = createRequire(import.meta.url);
 
 type FontAsset =
   | "JetBrainsMono-Regular.ttf"
   | "JetBrainsMono-Bold.ttf"
-  | "NotoSansJP-Bold.ttf"
   | "NotoSansSC-Bold.ttf";
+
+const fontCache = new Map<FontAsset, Buffer>();
 
 // Module-relative resolution covers Astro/Vite prerender builds; the
 // process.cwd() fallback matches the trayIconBase64() pattern below for
@@ -46,44 +37,17 @@ const FONT_DIR_CANDIDATES = [
 ].filter((dir): dir is string => dir !== null);
 
 function readFontAsset(filename: FontAsset): Buffer {
+  const cached = fontCache.get(filename);
+  if (cached) return cached;
   const fontPath = FONT_DIR_CANDIDATES.map((dir) => join(dir, filename)).find(existsSync);
   if (!fontPath) {
     throw new Error(
       `Missing vendored font ${filename}; looked in: ${FONT_DIR_CANDIDATES.join(", ")}`
     );
   }
-  return readFileSync(fontPath);
-}
-
-async function loadFont(): Promise<Buffer> {
-  if (fontData) return fontData;
-  fontData = readFontAsset("JetBrainsMono-Regular.ttf");
-  return fontData;
-}
-
-let fontBoldData: Buffer | null = null;
-
-async function loadFontBold(): Promise<Buffer> {
-  if (fontBoldData) return fontBoldData;
-  fontBoldData = readFontAsset("JetBrainsMono-Bold.ttf");
-  return fontBoldData;
-}
-
-// CJK fonts — lazy loaded only for Japanese/Chinese screenshots
-let notoJPData: Buffer | null = null;
-
-async function loadNotoJP(): Promise<Buffer> {
-  if (notoJPData) return notoJPData;
-  notoJPData = readFontAsset("NotoSansJP-Bold.ttf");
-  return notoJPData;
-}
-
-let notoSCData: Buffer | null = null;
-
-async function loadNotoSC(): Promise<Buffer> {
-  if (notoSCData) return notoSCData;
-  notoSCData = readFontAsset("NotoSansSC-Bold.ttf");
-  return notoSCData;
+  const data = readFileSync(fontPath);
+  fontCache.set(filename, data);
+  return data;
 }
 
 export async function renderImage(
@@ -92,22 +56,13 @@ export async function renderImage(
   height: number,
   lang?: string
 ): Promise<Uint8Array> {
-  const fontLoads: Promise<Buffer>[] = [loadFont(), loadFontBold()];
-  if (lang === "ja") fontLoads.push(loadNotoJP());
-  if (lang === "zh-Hans") fontLoads.push(loadNotoSC());
-
-  const loaded = await Promise.all(fontLoads);
-
   const fonts: { name: string; data: Buffer; weight: 400 | 700; style: "normal"; lang?: string }[] = [
-    { name: "JetBrains Mono", data: loaded[0], weight: 400, style: "normal" },
-    { name: "JetBrains Mono", data: loaded[1], weight: 700, style: "normal" },
+    { name: "JetBrains Mono", data: readFontAsset("JetBrainsMono-Regular.ttf"), weight: 400, style: "normal" },
+    { name: "JetBrains Mono", data: readFontAsset("JetBrainsMono-Bold.ttf"), weight: 700, style: "normal" },
   ];
 
-  if (lang === "ja") {
-    fonts.push({ name: "Noto Sans JP", data: loaded[2], weight: 700, style: "normal", lang: "ja-JP" });
-  }
   if (lang === "zh-Hans") {
-    fonts.push({ name: "Noto Sans SC", data: loaded[2], weight: 700, style: "normal", lang: "zh-CN" });
+    fonts.push({ name: "Noto Sans SC", data: readFontAsset("NotoSansSC-Bold.ttf"), weight: 700, style: "normal", lang: "zh-CN" });
   }
 
   const svg = await satori(element, { width, height, fonts });

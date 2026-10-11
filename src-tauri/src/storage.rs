@@ -62,14 +62,13 @@ fn platform_sample() -> Option<StorageSample> {
     use core::ffi::c_void;
     use core_foundation::array::CFArray;
     use core_foundation::base::TCFType;
-    use core_foundation::dictionary::CFDictionary;
+    use core_foundation::dictionary::{CFDictionary, CFDictionaryGetValueIfPresent};
     use core_foundation::number::{CFNumber, CFNumberRef};
+    use core_foundation::string::CFStringRef;
     use core_foundation::url::{
-        kCFURLVolumeAvailableCapacityKey, kCFURLVolumeTotalCapacityKey, CFURL,
+        kCFURLVolumeAvailableCapacityKey, kCFURLVolumeTotalCapacityKey,
+        CFURLCopyResourcePropertiesForKeys, CFURL,
     };
-    use core_foundation_sys::dictionary::CFDictionaryGetValueIfPresent;
-    use core_foundation_sys::string::CFStringRef;
-    use core_foundation_sys::url::CFURLCopyResourcePropertiesForKeys;
     use std::ptr;
 
     unsafe fn dictionary_capacity(dict: &CFDictionary, key: CFStringRef) -> Option<u64> {

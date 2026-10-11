@@ -1,7 +1,6 @@
 import type { APIRoute, GetStaticPaths } from "astro";
 import { renderImage, colors, imageBackgroundStyle, trayIconBase64 } from "../../lib/renderer";
-import { appStoreScreenshots, supportedLangs, screenshotKeys, siteMarketingLocales, ogTitles, screenshotLangByLocale } from "../../lib/translations";
-import type { SiteMarketingLocale } from "../../lib/translations";
+import { marketingCopy, screenshotKeys, siteMarketingLocales } from "../../lib/translations";
 
 export const prerender = true;
 
@@ -9,35 +8,26 @@ const BASE_WIDTH = 2880;
 const OG_TEXT_BASE = 2100;
 
 // App Store screenshots: 4 languages x 3 screenshots = 12 entries (2880x1800, 16:10)
-const appStoreEntries = supportedLangs.flatMap((lang) =>
+const appStoreEntries = siteMarketingLocales.flatMap((locale) =>
   screenshotKeys.map((key) => ({
-    slug: `${key}-${lang}`,
-    title: appStoreScreenshots[lang][key],
+    slug: `${key}-${marketingCopy[locale].screenshotLang}`,
+    title: marketingCopy[locale].screenshots[key],
     width: 2880,
     height: 1800,
-    lang,
+    lang: marketingCopy[locale].screenshotLang,
   }))
 );
 
 // OG images: 6 pages x 4 locales = 24 entries (1200x630)
-const ogPages = [
-  { key: "index", title: (l: SiteMarketingLocale) => ogTitles[l].index },
-  { key: "privacy", title: (l: SiteMarketingLocale) => ogTitles[l].privacy },
-  { key: "terms", title: (l: SiteMarketingLocale) => ogTitles[l].terms },
-  { key: "vs-stats", title: (l: SiteMarketingLocale) => ogTitles[l]["vs-stats"] },
-  { key: "vs-istat-menus", title: (l: SiteMarketingLocale) => ogTitles[l]["vs-istat-menus"] },
-  { key: "vs-eul", title: (l: SiteMarketingLocale) => ogTitles[l]["vs-eul"] },
-];
-
 const ogEntries = siteMarketingLocales.flatMap((locale) =>
-  ogPages.map((page) => ({
-    slug: `og-${page.key}-${locale}`,
-    title: page.title(locale),
+  Object.entries(marketingCopy[locale].ogTitles).map(([key, title]) => ({
+    slug: `og-${key}-${locale}`,
+    title,
     width: 1200,
     height: 630,
     showAppName: true,
     textBase: OG_TEXT_BASE,
-    lang: screenshotLangByLocale[locale],
+    lang: marketingCopy[locale].screenshotLang,
   }))
 );
 

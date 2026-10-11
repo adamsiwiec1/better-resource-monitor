@@ -1,10 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import cloudflare from '@astrojs/cloudflare';
-
-/** @param {string} id */
-const externalNativeRenderer = (id) => /@resvg[\\/]/.test(id) || id.endsWith('.node');
 
 // https://astro.build/config
 export default defineConfig({
@@ -23,22 +19,15 @@ export default defineConfig({
   site: 'https://better-resource-monitor.alexpedersen.dev',
   trailingSlash: 'always',
   integrations: [sitemap()],
-  adapter: cloudflare({
-    configPath: '../wrangler.toml',
-    imageService: 'passthrough',
-    prerenderEnvironment: 'node',
-  }),
   vite: {
     build: {
       rollupOptions: {
-        external: externalNativeRenderer,
+        external: [/@resvg[\\/]/, /\.node$/],
       },
     },
     ssr: {
-      // @ts-expect-error resvg native module matched by regex; Vite types
-      // ssr.external as string[] but RegExp entries work at runtime and the
-      // resvg externalization is load-bearing for the image routes.
-      external: [/^@resvg\/resvg-js(?:-.+)?$/, 'node:fs', 'node:module', 'node:path'],
+      // Keep the native image renderer in Node during prerendering.
+      external: ['@resvg/resvg-js', 'node:fs', 'node:module', 'node:path'],
     },
   },
 });

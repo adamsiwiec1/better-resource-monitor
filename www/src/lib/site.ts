@@ -1,4 +1,4 @@
-import { localeMeta, siteMarketingLocales, type SiteMarketingLocale } from "./translations";
+import { marketingCopy, siteMarketingLocales, type SiteMarketingLocale } from "./translations";
 
 export const locales = siteMarketingLocales;
 export type SupportedLocale = SiteMarketingLocale;
@@ -27,7 +27,7 @@ const tokenMap = {
 } as const;
 
 export function getLocaleMeta(locale: SupportedLocale) {
-  return localeMeta[locale];
+  return marketingCopy[locale].meta;
 }
 
 export function getLocalizedPath(locale: SupportedLocale, slug = "") {

@@ -6,12 +6,12 @@ The root Tauri app has no web frontend/window: app wiring is in `src-tauri/src/l
 
 - App: `pnpm dev` / `pnpm build`. Rust checks run in `src-tauri/`: `cargo fmt`, `cargo test [test_name]`, `cargo clippy`; coverage uses `cargo llvm-cov --lib --html --output-dir coverage/`.
 - Site: `pnpm dev:www` / `pnpm build:www`. Root has no `test` or `lint` scripts.
-- `pnpm build:screenshots` renders tray art, builds the site, and copies `www/dist/client/images` PNGs to `images/appstore/<lang>/`.
+- `pnpm build:screenshots` renders tray art, builds the site, and copies `www/dist/images` PNGs to `images/appstore/<lang>/`.
 
 ## Cross-surface contracts
 
 - `www/src/content.config.ts` loads root localized `README*.md` into the website; README edits affect the site.
-- Locale changes must align `www/src/lib/marketing-copy.json` and app `src-tauri/src/i18n.rs`; screenshot tags map separately in `www/src/lib/translations.ts`. `scripts/check-locale-parity.mjs` checks structure, not translation quality.
+- Locale changes must align `www/src/lib/marketing-copy.json` and app `src-tauri/src/i18n.rs`. The marketing copy's `screenshotLang` fields drive screenshot tags. `scripts/check-locale-parity.mjs` checks structure, not translation quality.
 - Image routes in `www/src/pages/images/[id].png.ts` run at build time in Node, not Cloudflare. Preserve native `@resvg/resvg-js` SSR externalization and vendored fonts in `www/src/assets/fonts`; builds need no Google Fonts fetches.
 - For tray visual changes, regenerate marketing art through `src-tauri/examples/render_tray_icon.rs`; never hand-redraw `www/public/better-resource-monitor*.png` independently.
 - App Store builds use repo feature `app-store`; sysinfo uses dependency feature `apple-app-store`. Keep GPU sampling through public IOAccelerator in `src-tauri/src/gpu.rs`; no GPU stub or obsolete private IOReport workaround.

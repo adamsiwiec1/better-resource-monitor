@@ -6,11 +6,9 @@
 		"dev": "astro dev",
 		"build": "node --test *.test.mjs && astro build",
 		"preview": "astro build && wrangler pages dev --cwd ..",
-		"astro": "astro",
 		"check": "astro check"
 	},
 	"dependencies": {
-		"@astrojs/cloudflare": "^14.3.3",
 		"@astrojs/sitemap": "^3.7.3",
 		"@resvg/resvg-js": "^2.6.2",
 		"astro": "^7.3.5",

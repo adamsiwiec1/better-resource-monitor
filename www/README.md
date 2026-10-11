@@ -25,4 +25,5 @@ Type-check with `pnpm check:www`. The site build also runs `www/*.test.mjs`.
 ## Deployment
 
 Cloudflare Pages deploys `main` automatically through its Git integration.
+The root [`wrangler.toml`](../wrangler.toml) is shared by deployment and local tools.
 GitHub Actions runs validation.

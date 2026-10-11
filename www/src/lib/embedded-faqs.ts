@@ -126,9 +126,9 @@ export function getComparisonFaqItems(pageKey: ComparisonPageKey, locale: Suppor
             "Yes, if you want a Stats alternative focused on CPU, memory, storage, GPU, and network. Stats is better if you need fan, thermal, and deeper sensor detail.",
         },
         {
-          question: "Why does Stats need more system access?",
+          question: "Does Better Resource Monitor need a helper for thermal status?",
           answer:
-            "Stats goes deeper into fan and thermal readings, which can require a helper. Better Resource Monitor avoids that category of data and stays sandbox-friendly.",
+            "Better Resource Monitor reads macOS thermal status through public APIs while staying sandboxed. It does not read individual sensor temperatures or fan speeds.",
         },
       ],
       es: [
@@ -138,9 +138,9 @@ export function getComparisonFaqItems(pageKey: ComparisonPageKey, locale: Suppor
             "Sí, si quieres una alternativa a Stats más simple, centrada en CPU, memoria, almacenamiento, GPU y red. Stats es más amplio si necesitas ventiladores, temperaturas y sensores más profundos.",
         },
         {
-          question: "¿Por qué Stats necesita más acceso al sistema?",
+          question: "¿Better Resource Monitor necesita un helper para leer el estado térmico?",
           answer:
-            "Stats profundiza en lecturas de ventiladores y temperatura, lo que puede requerir un helper. Better Resource Monitor evita esa categoría de datos y se mantiene compatible con sandbox.",
+            "Better Resource Monitor lee el estado térmico de macOS mediante APIs públicas y funciona en sandbox. No lee temperaturas de sensores individuales ni velocidades de ventiladores.",
         },
       ],
       "pt-br": [
@@ -150,9 +150,9 @@ export function getComparisonFaqItems(pageKey: ComparisonPageKey, locale: Suppor
             "Sim, se você quer uma alternativa ao Stats mais simples, focada em CPU, memória, armazenamento, GPU e rede. O Stats é mais amplo se você precisa de ventoinhas, temperatura e sensores mais detalhados.",
         },
         {
-          question: "Por que o Stats precisa de mais acesso ao sistema?",
+          question: "O Better Resource Monitor precisa de um helper para ler o estado térmico?",
           answer:
-            "O Stats aprofunda leituras de ventoinhas e temperatura, o que pode exigir um helper. O Better Resource Monitor evita essa categoria de dados e permanece compatível com sandbox.",
+            "O Better Resource Monitor lê o estado térmico do macOS por APIs públicas e roda em sandbox. Não lê temperaturas de sensores individuais nem velocidades de ventoinhas.",
         },
       ],
       "zh-cn": [
@@ -162,9 +162,9 @@ export function getComparisonFaqItems(pageKey: ComparisonPageKey, locale: Suppor
             "是的，如果你想要一个更简单、专注于 CPU、内存、存储、GPU 和网络的 Stats 替代品。若需要风扇、温度和更深层传感器，Stats 覆盖更广。",
         },
         {
-          question: "为什么 Stats 需要更多系统访问权限？",
+          question: "Better Resource Monitor 需要辅助工具才能读取温度状态吗？",
           answer:
-            "Stats 会读取更深层的风扇和温度数据，因此可能需要辅助工具。Better Resource Monitor 避开这类数据，因此更适合沙盒环境。",
+            "Better Resource Monitor 通过公共 API 读取 macOS 的温度状态，并在沙盒中运行。它不读取各个传感器的温度或风扇转速。",
         },
       ],
     },

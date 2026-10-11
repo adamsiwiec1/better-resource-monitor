@@ -28,9 +28,6 @@ const faqItems = pickFaqItems(faqEntry.data.items, "home");
   preloadImage="/better-resource-monitor-storage.png"
 >
   <style is:global>
-    /* Hallmark · macrostructure: Long Document · tone: warm utility manual · anchor hue: ember
-     * design-system: DESIGN.md · contrast: pass (40–41) · mobile: pass (34, 49, 50–57)
-     * Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V4 */
     .home-document {
       padding-top: clamp(var(--space-5), 7vw, var(--space-10));
     }
@@ -82,24 +79,16 @@ const faqItems = pickFaqItems(faqEntry.data.items, "home");
       line-height: 1;
     }
 
-    .home-document article > p[align="center"]:not(:has(img)):has(a) {
+    .home-document .language-switcher {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      justify-content: flex-start;
-      column-gap: 0;
-      row-gap: var(--space-2);
-      font-size: 0;
-      text-align: left;
+      gap: var(--space-2);
     }
 
-    .home-document article > p[align="center"]:not(:has(img)):has(a) a,
-    .home-document article > p[align="center"]:not(:has(img)):has(a) span {
+    .home-document .language-switcher a {
       font-size: var(--fs-sm);
-    }
-
-    .home-document article > p[align="center"]:not(:has(img)):has(a) a:not(:last-of-type) {
-      margin-inline-end: var(--space-2);
+      white-space: nowrap;
     }
 
     .home-document article > h2 {
@@ -121,11 +110,6 @@ const faqItems = pickFaqItems(faqEntry.data.items, "home");
         justify-content: flex-start;
         gap: var(--space-3);
         flex-wrap: wrap;
-      }
-
-      p[align="center"]:not(:has(img)):has(a) a {
-        font-size: var(--fs-sm);
-        white-space: nowrap;
       }
     }
   </style>

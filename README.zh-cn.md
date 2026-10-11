@@ -50,7 +50,7 @@ Better Resource Monitor 适合那些只想用一种简单方式看看自己的 M
 
 ### 是否免费？
 
-是，Better Resource Monitor 免费且采用 MIT 许可证。Mac App Store 版本与 GitHub 版本是同一款应用。
+是，Better Resource Monitor 免费且采用 MIT 许可证。两个版本包含相同的监控功能，但更新方式不同。
 
 ### 会发送用户数据或遥测吗？
 
@@ -86,19 +86,9 @@ pnpm install
 pnpm tauri build
 ```
 
-### 开发
+本地测试请使用 `pnpm dev`。本地构建的未签名 macOS 应用包不属于支持的安装发行版。
 
-```bash
-# 以开发模式运行并热重载
-pnpm tauri dev
-
-# 运行测试
-cd src-tauri && cargo test
-
-# 运行覆盖率测试 (需要 cargo-llvm-cov)
-cargo install cargo-llvm-cov
-cd src-tauri && cargo llvm-cov --lib --html --output-dir coverage/
-```
+开发与验证请参阅[贡献指南](https://github.com/alexx855/better-resource-monitor/blob/main/CONTRIBUTING.md)。
 
 ## 对比
 

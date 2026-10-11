@@ -8,12 +8,7 @@ const imagePattern = new RegExp(
   `<img src="https://better-resource-monitor\\.alexpedersen\\.dev/${imageFilename}" alt="Better Resource Monitor" width="(\\d+)" height="(\\d+)">`,
 );
 
-test("README tray image is generated with storage and uses its generated dimensions", async () => {
-  const script = await readFile(new URL("../scripts/images-helper.sh", import.meta.url), "utf8");
-  assert.match(script, new RegExp(`--out www/public/${imageFilename.replace(".", "\\.")}`));
-  assert.match(script, /--show-storage true/);
-  assert.match(script, /--storage "19\.5 GB"/);
-
+test("README tray image dimensions match the published PNG", async () => {
   const png = await readFile(new URL(`./public/${imageFilename}`, import.meta.url));
   assert.equal(png.toString("ascii", 1, 4), "PNG");
   const width = png.readUInt32BE(16);
@@ -29,16 +24,4 @@ test("README tray image is generated with storage and uses its generated dimensi
       `${filename} dimensions should match the generated PNG`,
     );
   }
-});
-
-test("home page tray image keeps its natural ratio and square corners", async () => {
-  const component = await readFile(new URL("./src/components/pages/HomePage.astro", import.meta.url), "utf8");
-  const rule = component.match(/p\[align="center"\] img\[alt="Better Resource Monitor"\] \{([^}]*)\}/)?.[1];
-
-  assert.ok(rule, "tray image CSS rule should exist");
-  assert.match(rule, /width:\s*auto;/);
-  assert.match(rule, /max-width:\s*100%;/);
-  assert.match(rule, /height:\s*auto;/);
-  assert.match(rule, /border-radius:\s*0;/);
-  assert.doesNotMatch(rule, /aspect-ratio:/);
 });

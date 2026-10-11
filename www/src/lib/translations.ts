@@ -5,7 +5,6 @@ const siteMarketingCopy = marketingCopy;
 export type SiteMarketingLocale = keyof typeof siteMarketingCopy;
 export type Lang = (typeof siteMarketingCopy)[SiteMarketingLocale]["screenshotLang"];
 export type ScreenshotKey = keyof (typeof siteMarketingCopy)["en"]["screenshots"];
-export type BadgeKey = keyof (typeof siteMarketingCopy)["en"]["badges"];
 export type LocaleMeta = (typeof siteMarketingCopy)[SiteMarketingLocale]["meta"];
 
 export const siteMarketingLocales = Object.keys(marketingCopy) as SiteMarketingLocale[];
@@ -25,13 +24,6 @@ export const appStoreScreenshots: Record<Lang, typeof siteMarketingCopy.en.scree
 };
 
 export const supportedLangs: Lang[] = screenshotLocales.map(({ lang }) => lang);
-export const localizedBadges = {
-  en: siteMarketingCopy.en.badges,
-  es: siteMarketingCopy.es.badges,
-  "pt-br": siteMarketingCopy["pt-br"].badges,
-  "zh-cn": siteMarketingCopy["zh-cn"].badges,
-} satisfies Record<SiteMarketingLocale, (typeof siteMarketingCopy)[SiteMarketingLocale]["badges"]>;
-
 export const localeMeta = {
   en: siteMarketingCopy.en.meta,
   es: siteMarketingCopy.es.meta,

@@ -3,10 +3,6 @@ use objc2_service_management::{SMAppService, SMAppServiceStatus};
 
 const BUNDLE_ID: &str = "dev.alexpedersen.better-resource-monitor";
 
-// Greenfield TestFlight/App Store runtime only. The removed bundled LaunchAgent
-// path was never a supported shipped artifact, so this module intentionally does
-// not migrate or clean up old agent registrations.
-
 /// Returns false if not running as the proper app bundle (e.g. `tauri dev` raw binary).
 /// SMAppService.mainApp would register the wrong process in that case.
 fn is_bundled() -> bool {

@@ -2,8 +2,7 @@
 
 These fonts are read by `www/src/lib/renderer.ts` (generated OG/screenshot
 images) and `www/generate-badges.mjs` (download badges) so builds do not
-depend on Google Fonts network availability. Do not use them for the app's
-tray rendering (`src-tauri/src/tray_render.rs` embeds its own font).
+depend on network access. The app tray uses a system font instead.
 
 | File | Family | Source | License |
 | --- | --- | --- | --- |

@@ -50,7 +50,7 @@ Sim, quando o objetivo é visibilidade estável no dia a dia. iStat Menus é mel
 
 ### É gratuito?
 
-Sim. Better Resource Monitor é gratuito e com licença MIT. A versão da Mac App Store e a do GitHub são o mesmo app.
+Sim. Better Resource Monitor é gratuito e com licença MIT. Ambas as versões incluem os mesmos recursos de monitoramento; o método de atualização é diferente.
 
 ### Ele coleta dados ou envia telemetria?
 
@@ -86,19 +86,9 @@ pnpm install
 pnpm tauri build
 ```
 
-### Desenvolvimento
+Use `pnpm dev` para testes locais. Um pacote do macOS sem assinatura gerado localmente não é uma versão instalável compatível.
 
-```bash
-# Executar em modo de desenvolvimento com hot reload
-pnpm tauri dev
-
-# Executar testes
-cd src-tauri && cargo test
-
-# Executar testes com cobertura (requer cargo-llvm-cov)
-cargo install cargo-llvm-cov
-cd src-tauri && cargo llvm-cov --lib --html --output-dir coverage/
-```
+Para desenvolvimento e validação, consulte o [guia de contribuição](https://github.com/alexx855/better-resource-monitor/blob/main/CONTRIBUTING.md).
 
 ## Comparação
 

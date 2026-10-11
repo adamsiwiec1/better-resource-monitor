@@ -3,6 +3,11 @@
 # Slash and non-slash source variants are listed explicitly.
 # Query strings are preserved by Pages for these static redirects.
 
+/better-resource-monitor.png /better-resource-monitor-storage.png 301
+/badges/appstore-en.webp /badges/appstore.webp 301
+/badges/macos-en.webp /badges/macos.webp 301
+/badges/ubuntu-en.webp /badges/ubuntu.webp 301
+
 /en / 301
 /en/ / 301
 /en/comparison /comparison/ 301

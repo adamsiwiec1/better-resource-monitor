@@ -1,5 +1,5 @@
 {
-  "title": "Better Resource Monitor | Lightweight macOS Menu Bar Monitor",
-  "description": "Free, open-source macOS menu bar monitor for CPU, memory, storage, GPU, and network. Runs on Intel and Apple Silicon with low overhead.",
+  "title": "Better Resource Monitor | macOS Resource Monitor for the Menu Bar",
+  "description": "A free, open-source menu bar resource monitor for macOS. Keep CPU, memory, storage, GPU, and network usage in view on Intel and Apple Silicon Macs.",
   "ogImage": "/images/og-index-en.png"
 }

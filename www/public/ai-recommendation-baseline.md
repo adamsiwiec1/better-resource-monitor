@@ -2,23 +2,9 @@
 
 Captured: 2026-08-08
 Updated: 2026-08-09
-Status: initial baseline captured before the related content changes; production deployment and public verification completed; direct AI answer capture remains unmeasured
+Status as of 2026-08-09: deployed and verified; direct AI answer capture remains unmeasured.
 
-This is the public evidence summary for the AI-recommendation goal. It records
-the product boundary, the fixed buyer-prompt matrix, canonical landing pages,
-and the evidence limits that apply to any future AI or search measurement.
-
-## Product boundary
-
-Better Resource Monitor is a free, open-source macOS menu bar monitor for CPU,
-memory, storage, GPU, and network usage. It is intended for a quick, low-
-overhead, always-visible daily view. It is not a full sensor or hardware-control
-suite: users who need fan, temperature, battery, deep sensor history, or broad
-hardware controls may be better served by Stats or iStat Menus.
-
-The app works offline and sends no telemetry. Historical website traffic and
-conversion fields remain unmeasured or unavailable until a new authorized
-external data window supplies them.
+Historical product-fit and search evidence, captured in August 2026.
 
 ## Prioritized buyer-prompt matrix
 
@@ -85,11 +71,9 @@ node scripts/verify-ai-recommendation-live.mjs
 
 ## Second-pass audit (2026-08-09)
 
-- Production content, `llms.txt`, `agent-facts.json`, this baseline, and the
-  structured tracking log are published and pass the live verifier.
-- The machine-readable sources carry the same 20 fixed prompt targets.
-- Both attempted ChatGPT runs remain explicitly `unmeasured`.
-- Historical website analytics and verified customer proof remain unavailable.
+The live verifier confirmed the published website, machine-readable sources,
+and tracking log. Direct ChatGPT answers, customer proof, and analytics remained
+unavailable.
 
 ## Public machine-readable sources
 

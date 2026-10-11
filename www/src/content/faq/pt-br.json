@@ -17,13 +17,13 @@
     },
     {
       "id": "macos-support",
-      "question": "Em quais versões do macOS ele foi testado?",
+      "question": "Quais versões do macOS são compatíveis?",
       "answer": "Funciona em Macs Intel e Apple Silicon com macOS Ventura 13 ou mais recente."
     },
     {
       "id": "pricing",
       "question": "É gratuito?",
-      "answer": "Sim. Licenciado sob MIT e é gratuito. As versões da Mac App Store e do GitHub são o mesmo aplicativo."
+      "answer": "Sim. Ambas as versões são gratuitas, têm licença MIT e incluem os mesmos recursos de monitoramento. A Mac App Store gerencia as atualizações automaticamente; os downloads do GitHub são atualizados manualmente."
     },
     {
       "id": "resource-use",
@@ -48,12 +48,12 @@
     {
       "id": "battery",
       "question": "Ele drena a bateria do MacBook?",
-      "answer": "Não. Monitores que consultam ventoinhas e sensores térmicos impedem que o Apple Silicon entre em repouso profundo. Este aplicativo ignora essas leituras completamente, por isso ele fica abaixo de 0,1% de CPU."
+      "answer": "Ele foi projetado para consumir poucos recursos, mas o impacto na bateria depende do seu Mac e da carga de trabalho. Lê o estado térmico do macOS por APIs públicas; não mostra temperaturas de sensores individuais nem velocidades de ventoinhas."
     },
     {
       "id": "activity-monitor",
-      "question": "Por que não usar apenas o Monitor de Atividade?",
-      "answer": "O Monitor de Atividade é uma janela completa que você precisa abrir. Este aplicativo fica na sua barra de menus e atualiza a cada segundo. Você vê os números sem precisar alternar entre aplicativos."
+      "question": "O Better Resource Monitor é uma alternativa ao Monitor de Atividade do macOS?",
+      "answer": "Ele é um complemento sempre visível na barra de menus para consultar rapidamente o uso de CPU, memória, armazenamento, GPU e rede. Não substitui a lista detalhada de processos nem os recursos da janela principal do Monitor de Atividade; abra o Monitor de Atividade quando precisar inspecionar ou gerenciar processos individuais."
     }
   ]
 }

@@ -27,6 +27,7 @@
     "Storage monitoring",
     "GPU monitoring",
     "Network monitoring",
+    "macOS thermal status",
     "Theme aware",
     "Sandboxed",
     "No admin password",
@@ -40,7 +41,7 @@
       "Intel and Apple Silicon Macs running macOS 13 or newer"
     ],
     "notBestFor": [
-      "Fan or temperature monitoring",
+      "Fan speeds or individual temperature sensor readings",
       "Battery health monitoring",
       "Deep sensor history or broad hardware controls"
     ],
@@ -232,7 +233,7 @@
     "automatedIssueCreationAllowed": false,
     "notes": [
       "Prefer canonical website and repository URLs when citing product details.",
-      "Signed and notarized DMG artifacts are attached to GitHub releases starting v1.1.7; the Mac App Store build is the same app with automatic updates.",
+      "GitHub releases provide signed and notarized macOS downloads. Both distributions include the same monitoring features; the Mac App Store handles updates automatically, while GitHub downloads are updated manually.",
       "Comparison-page competitor numbers are approximate and may change over time."
     ]
   },

@@ -66,8 +66,11 @@ const homeBody = defineCollection({
         const filename = locale === "en" ? "README.md" : `README.${locale}.md`;
         const raw = await readFile(resolve(rootDir, filename), "utf-8");
         const body = raw
-          .replace(/<!-- README-LANG-START -->\n?/s, "")
-          .replace(/\n?<!-- README-LANG-END -->\n*/s, "")
+          // Keep locale links, without GitHub's current-locale text and separators.
+          .replace(/<!-- README-LANG-START -->[\s\S]*?<!-- README-LANG-END -->/, (block) => {
+            const links = block.match(/<a\b[^>]*>[\s\S]*?<\/a>/g) ?? [];
+            return `<p class="language-switcher">${links.join(" ")}</p>`;
+          })
           .replace(/<p align="center">\n {2}<a href="#[\s\S]*?<\/p>\n\n/s, "")
           .trim();
 

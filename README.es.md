@@ -86,7 +86,7 @@ pnpm install
 pnpm tauri build
 ```
 
-Usa `pnpm dev` para pruebas locales. Un paquete de macOS sin firmar generado localmente no es una versión instalable compatible.
+Usa `pnpm dev` para pruebas locales. Un paquete de macOS sin firmar generado localmente no cuenta con soporte para su uso como aplicación instalada.
 
 Para desarrollo y validación, consulta la [guía de contribución](https://github.com/alexx855/better-resource-monitor/blob/main/CONTRIBUTING.md).
 

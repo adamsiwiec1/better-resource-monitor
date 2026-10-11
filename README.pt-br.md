@@ -86,7 +86,7 @@ pnpm install
 pnpm tauri build
 ```
 
-Use `pnpm dev` para testes locais. Um pacote do macOS sem assinatura gerado localmente não é uma versão instalável compatível.
+Use `pnpm dev` para testes locais. Um pacote do macOS sem assinatura gerado localmente não tem suporte para uso como aplicativo instalado.
 
 Para desenvolvimento e validação, consulte o [guia de contribuição](https://github.com/alexx855/better-resource-monitor/blob/main/CONTRIBUTING.md).
 

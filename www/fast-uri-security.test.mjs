@@ -2,11 +2,12 @@ import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 import test from "node:test";
 
-const require = createRequire(import.meta.url);
-// fast-uri is transitive through the website's Astro check dependency.
-const fastUri = require(
-  require.resolve("fast-uri", { paths: [require.resolve("@astrojs/check")] }),
-);
+// Resolve through the owning packages so this works with pnpm's isolated layout.
+let require = createRequire(import.meta.url);
+for (const dependency of ["@astrojs/check", "@astrojs/language-server", "volar-service-yaml", "yaml-language-server", "ajv"]) {
+  require = createRequire(require.resolve(dependency));
+}
+const fastUri = require("fast-uri");
 
 test("rejects backslash authority introducers before URL policy can diverge", () => {
   const baseUrl = "https://allowed.com/";

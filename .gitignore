@@ -12,6 +12,7 @@ node_modules
 dist
 dist-ssr
 .wrangler/
+.astro/
 *.local
 
 # Editor directories and files
@@ -27,6 +28,8 @@ dist-ssr
 
 .env**
 !.env.example
+.dev.vars*
+!.dev.vars.example
 .gsc-config.json
 scripts/.build-number
 
@@ -35,8 +38,6 @@ scripts/.build-number
 *.p8
 *.mobileprovision
 *.provisionprofile
-src-tauri/embedded.provisionprofile
-private_keys/*.p8
 .agents/skills/*
 
 # Keep retired repository notes local-only when restored for reference.

@@ -7,8 +7,7 @@
 		"build": "node --test *.test.mjs && astro build",
 		"preview": "astro build && wrangler pages dev --cwd ..",
 		"astro": "astro",
-		"check": "astro check",
-		"cf-typegen": "wrangler types --config ../wrangler.toml"
+		"check": "astro check"
 	},
 	"dependencies": {
 		"@astrojs/cloudflare": "^14.3.3",

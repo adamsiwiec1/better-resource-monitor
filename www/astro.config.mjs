@@ -26,8 +26,6 @@ export default defineConfig({
   adapter: cloudflare({
     configPath: '../wrangler.toml',
     imageService: 'passthrough',
-    // platformProxy was removed in @astrojs/cloudflare v13; the underlying
-    // @cloudflare/vite-plugin provides bindings proxying in dev automatically.
     prerenderEnvironment: 'node',
   }),
   vite: {

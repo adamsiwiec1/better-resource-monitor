@@ -7,6 +7,7 @@ set -euo pipefail
 SOURCE_DIR="${1:?source directory is required}"
 BUILD_NUMBER_INPUT="${2:?build number is required}"
 BRM_BUILD_COMMIT_INPUT="${3:?build commit is required}"
+APPSTORE_CONFIG="$(cd "$(dirname "${BASH_SOURCE[0]}")/../src-tauri" && pwd)/tauri.appstore.conf.json"
 
 case "$BUILD_NUMBER_INPUT" in
   ''|*[!0-9]*)
@@ -46,23 +47,11 @@ if grep -R "IO[R]eport" src-tauri/src src-tauri/Cargo.toml .github scripts; then
 fi
 echo "No private GPU sampling source references found"
 
-CONFIG_PATH="$(mktemp "${RUNNER_TEMP:-${TMPDIR:-/tmp}}/brm-tauri-appstore-build.XXXXXX")"
-trap 'rm -f "$CONFIG_PATH"' EXIT
-cat > "$CONFIG_PATH" <<'JSON'
-{
-  "bundle": {
-    "macOS": {
-      "entitlements": "Entitlements.appstore.plist"
-    }
-  }
-}
-JSON
-
 export BRM_BUILD_COMMIT
 pnpm tauri build \
   --bundles app \
   --target universal-apple-darwin \
-  --config "$CONFIG_PATH" \
+  --config "$APPSTORE_CONFIG" \
   --features app-store
 
 APP_PATH="src-tauri/target/universal-apple-darwin/release/bundle/macos/Better Resource Monitor.app"

@@ -35,7 +35,7 @@
 
 Better Resource Monitor is for people who just want a quick, low-noise way to keep an eye on their Mac.
 
-It keeps CPU, memory, storage, GPU, and network usage in the menu bar, so you can catch unusual load without stopping what you're doing or opening Activity Monitor.
+Better Resource Monitor is a lightweight macOS resource monitor for the menu bar. It keeps CPU, memory, storage, GPU, and network usage in view, so you can catch unusual load without stopping what you're doing or opening Activity Monitor.
 
 If you're evaluating an iStat Menus alternative, this is the same place to do it: a lightweight monitor for everyday metrics with low overhead and no telemetry.
 
@@ -53,7 +53,7 @@ Yes, when your goals are visibility and daily stability. iStat Menus is excellen
 
 ### Is it free?
 
-Yes. Better Resource Monitor is free and MIT licensed. The Mac App Store build and GitHub build are the same app.
+Yes. Better Resource Monitor is free and MIT licensed. Both distributions include the same monitoring features; their update methods differ.
 
 ### Does it send telemetry or collect usage data?
 
@@ -90,19 +90,9 @@ pnpm install
 pnpm tauri build
 ```
 
-### Development
+Use `pnpm dev` for local testing. An unsigned macOS bundle built locally is not a supported installed release.
 
-```bash
-# Run in development mode with hot reload
-pnpm tauri dev
-
-# Run tests
-cd src-tauri && cargo test
-
-# Run tests with coverage (requires cargo-llvm-cov)
-cargo install cargo-llvm-cov
-cd src-tauri && cargo llvm-cov --lib --html --output-dir coverage/
-```
+For development and validation, see the [contributor guide](https://github.com/alexx855/better-resource-monitor/blob/main/CONTRIBUTING.md).
 
 ## Comparison
 

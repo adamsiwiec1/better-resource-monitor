@@ -2,27 +2,27 @@
 
 Marketing and documentation website for [Better Resource Monitor](https://github.com/alexx855/better-resource-monitor), a lightweight menu bar system monitor for macOS.
 
-## Tech Stack
-
-- [Astro](https://astro.build) - Static site generator
-- [Cloudflare Pages](https://pages.cloudflare.com) - Hosting and deployment
-
 ## Development
+
+Run these commands from the repository root:
 
 ```bash
 # Install dependencies
 pnpm install
 
 # Start dev server (localhost:4321)
-pnpm dev
+pnpm dev:www
 
 # Build for production
-pnpm build
+pnpm build:www
 
 # Preview production build locally
-pnpm preview
+pnpm preview:www
 ```
+
+Type-check with `pnpm check:www`. The site build also runs `www/*.test.mjs`.
 
 ## Deployment
 
-The site is deployed to Cloudflare Pages. Pushes to `main` trigger automatic deployments.
+Cloudflare Pages deploys `main` automatically through its Git integration.
+GitHub Actions runs validation.

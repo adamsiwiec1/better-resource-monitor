@@ -65,7 +65,7 @@
     },
     {
       "heading": "Why Better Resource Monitor stays lighter",
-      "body": "Better Resource Monitor uses under 0.1% CPU on Apple Silicon and around 15 MB of memory. That lower overhead comes from keeping the feature set tighter and skipping the always-on sensor polling that heavier monitoring apps rely on. It is built to stay open all day without feeling like one more thing your Mac has to carry."
+      "body": "Better Resource Monitor uses under 0.1% CPU on Apple Silicon and around 15 MB of memory. It is built to stay open all day without feeling like one more thing your Mac has to carry."
     },
     {
       "heading": "Easy to install, easy to trust",

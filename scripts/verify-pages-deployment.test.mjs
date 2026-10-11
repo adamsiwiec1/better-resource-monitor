@@ -15,7 +15,7 @@ const redirects = new Map([
 ]);
 
 const pages = new Map([
-  ["/", "Better Resource Monitor | Lightweight macOS Menu Bar Monitor"],
+  ["/", "Better Resource Monitor | macOS Resource Monitor for the Menu Bar"],
   ["/comparison/", "Mac Menu Bar Monitor Comparisons | Better Resource Monitor"],
   ["/privacy-policy/", "Privacy Policy"],
   ["/terms/", "Terms"],

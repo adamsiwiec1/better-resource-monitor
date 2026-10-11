@@ -26,16 +26,6 @@ const tokenMap = {
   githubIssuesUrl: "https://github.com/alexx855/better-resource-monitor/issues/new",
 } as const;
 
-function getBadgeUrls(locale: SupportedLocale) {
-  const baseUrl = "https://better-resource-monitor.alexpedersen.dev/badges";
-
-  return {
-    appStoreBadgeUrl: `${baseUrl}/appstore-${locale}.webp`,
-    macosBadgeUrl: `${baseUrl}/macos-${locale}.webp`,
-    ubuntuBadgeUrl: `${baseUrl}/ubuntu-${locale}.webp`,
-  };
-}
-
 export function getLocaleMeta(locale: SupportedLocale) {
   return localeMeta[locale];
 }
@@ -74,10 +64,9 @@ export function getLocalizedInternalLinks(locale: SupportedLocale) {
 
 export function replaceContentTokens(value: string, locale: SupportedLocale) {
   const links = getLocalizedInternalLinks(locale);
-  const badgeUrls = getBadgeUrls(locale);
   let result = value;
 
-  for (const [key, replacement] of Object.entries({ ...tokenMap, ...links, ...badgeUrls })) {
+  for (const [key, replacement] of Object.entries({ ...tokenMap, ...links })) {
     result = result.replaceAll(`{{${key}}}`, replacement);
   }
 

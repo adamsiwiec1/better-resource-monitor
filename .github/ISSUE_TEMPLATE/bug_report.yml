@@ -46,7 +46,7 @@ body:
     id: app-version
     attributes:
       label: Better Resource Monitor version
-      placeholder: "Example: 1.1.4"
+      placeholder: "Version you installed"
     validations:
       required: false
   - type: textarea

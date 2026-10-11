@@ -17,13 +17,13 @@
     },
     {
       "id": "macos-support",
-      "question": "¿En qué versiones de macOS se ha probado?",
+      "question": "¿Qué versiones de macOS son compatibles?",
       "answer": "Funciona en Mac con Intel y Apple Silicon con macOS Ventura 13 o posterior."
     },
     {
       "id": "pricing",
       "question": "¿Es gratis?",
-      "answer": "Sí. Tiene licencia MIT y es gratis. Las versiones de la Mac App Store y GitHub son la misma app."
+      "answer": "Sí. Ambas versiones son gratuitas, tienen licencia MIT e incluyen las mismas funciones de monitoreo. La Mac App Store gestiona las actualizaciones automáticamente; las descargas de GitHub se actualizan manualmente."
     },
     {
       "id": "resource-use",
@@ -48,12 +48,12 @@
     {
       "id": "battery",
       "question": "¿Consume la batería del MacBook?",
-      "answer": "No. Los monitores que consultan ventiladores y sensores térmicos evitan que Apple Silicon entre en reposo profundo. Esta app omite esas lecturas por completo, por eso se mantiene por debajo del 0,1% de CPU."
+      "answer": "Está diseñada para consumir pocos recursos, pero el impacto en la batería depende de tu Mac y de la carga de trabajo. Lee el estado térmico de macOS mediante APIs públicas; no muestra temperaturas de sensores individuales ni velocidades de ventiladores."
     },
     {
       "id": "activity-monitor",
-      "question": "¿Por qué no usar simplemente el Monitor de Actividad?",
-      "answer": "El Monitor de Actividad es una ventana completa que tienes que abrir. Esta app vive en la barra de menús y se actualiza cada segundo. Ves los números sin cambiar de app."
+      "question": "¿Es Better Resource Monitor una alternativa al Monitor de Actividad de macOS?",
+      "answer": "Es un complemento siempre visible en la barra de menús para consultar rápidamente el uso de CPU, memoria, almacenamiento, GPU y red. No sustituye la lista detallada de procesos ni las herramientas disponibles en la ventana principal del Monitor de Actividad; ábrelo cuando necesites inspeccionar o gestionar procesos individuales."
     }
   ]
 }

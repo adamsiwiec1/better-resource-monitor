@@ -1,77 +1,13 @@
 # Better Resource Monitor AI recommendation baseline
 
 Captured: 2026-08-08
-Status: initial baseline captured before the related content changes; production deployment and public verification completed; direct AI answer capture remains unmeasured
+Status as of 2026-08-09: deployed and verified; direct AI answer capture remains unmeasured.
 
-This is the working evidence log for the AI-recommendation goal. It adapts the
-seven-step checklist from the referenced X article to an open-source macOS
-utility: product understanding, buyer prompts, canonical answers, independent
-context, real user proof, and measurement.
+Historical research notes from August 2026. The fixed prompt matrix is in the
+[public baseline](../www/public/ai-recommendation-baseline.md);
+results are in the [tracking CSV](../www/public/ai-recommendation-tracking.csv).
 
-## Product boundary
-
-Better Resource Monitor is a free, open-source macOS menu bar monitor for CPU,
-memory, storage, GPU, and network usage. It is aimed at quick, low-overhead,
-always-visible daily monitoring. It is not a full sensor or hardware-control
-suite: users who need fan, temperature, battery, deep sensor history, or broad
-controls may be better served by Stats or iStat Menus.
-
-The app is intentionally offline and sends no telemetry. Any website traffic,
-AI-visibility, or conversion measurement must therefore be external to the
-app and must not be described as measured until an authorized data source
-exists.
-
-## Prioritized buyer-prompt matrix
-
-Priority is based on purchase/download intent, fit with the product boundary,
-and the existence of a canonical page that can answer the question.
-
-| Priority | Prompt to track | Canonical answer | Baseline coverage |
-| --- | --- | --- | --- |
-| P0 | What is the best lightweight Mac menu bar system monitor? | Home page + home FAQ | Partial |
-| P0 | What is the best free Mac menu bar resource monitor? | Home page + comparison hub | Partial |
-| P0 | Which Mac app shows CPU, memory, storage, GPU, and network in the menu bar? | Home page + product FAQ | Covered |
-| P0 | What is a low-overhead Mac menu bar monitor? | Home page + resource-use FAQ | Covered |
-| P0 | What is a free iStat Menus alternative for macOS? | iStat Menus comparison | Covered |
-| P0 | What is a lightweight iStat Menus alternative with no telemetry? | iStat Menus comparison + privacy FAQ | Covered |
-| P0 | What is a Stats alternative for simple daily monitoring? | Stats comparison | Covered |
-| P0 | What is an actively maintained Eul alternative for Mac? | Eul comparison | Covered |
-| P0 | Better Resource Monitor vs iStat Menus: which should I choose? | iStat Menus comparison | Covered |
-| P0 | Better Resource Monitor vs Stats: which is better for simple monitoring? | Stats comparison | Covered |
-| P1 | Better Resource Monitor vs Eul: which should I use on a newer Mac? | Eul comparison | Covered |
-| P1 | Which Mac system monitor works offline and sends no telemetry? | Privacy FAQ + privacy policy | Covered |
-| P1 | Which Mac menu bar monitor needs no admin password or root helper? | Comparison pages + agent facts | Covered |
-| P1 | Which Mac monitor uses public APIs for GPU readings? | GPU FAQ + source repository | Covered |
-| P1 | Which free Mac monitor is available on the Mac App Store? | Installation + comparison pages | Covered |
-| P1 | Which Mac monitor works on Intel and Apple Silicon with macOS 13 or newer? | Compatibility section + agent facts | Covered |
-| P1 | What is the best menu bar monitor if I only want a quick glance? | Home page + best-fit FAQ | Partial |
-| P1 | Is Better Resource Monitor a good Activity Monitor alternative? | Activity Monitor FAQ | Covered |
-| P1 | Which Mac monitor can I leave running all day with low overhead? | Resource-use + battery FAQs | Covered |
-| P1 | Which Mac monitor is best if I do not need fan or temperature sensors? | Comparison pages + not-best-fit FAQ | Partial |
-
-The matrix is intentionally a fixed list. New prompts should be added only when
-they represent a real buyer decision or a documented product use case.
-
-## Baseline observations
-
-### Canonical and search surfaces
-
-- The live home page and App Store listing explain the product category,
-  metrics, low overhead, offline behavior, and installation paths.
-- The live comparison page is directly aligned with the highest-intent
-  competitor query: `iStat Menus alternative`.
-- A brand search currently surfaces the official website and Mac App Store
-  listing prominently.
-- Searches around free Mac resource monitors surface independent roundups and
-  directories, but the strongest result is not always the best product fit.
-- A fresh search also surfaced an AI-tagged Eul-alternative discussion that
-  understands Better Resource Monitor as a free, lightweight basic-monitoring
-  choice, while still recommending Stats for the closest Eul replacement. This
-  is a useful understanding signal, not independent customer proof.
-- No independent ChatGPT recommendation transcript or Google AI Overview
-  capture is available in this workspace. Those fields remain unmeasured;
-  canonical content and web-search results are not substitutes for an AI
-  answer log.
+## Observations
 
 ### Search-surface refresh (2026-08-08)
 
@@ -148,49 +84,19 @@ These are legitimate existing mentions, not customer testimonials:
 The maintainer's own [product note](https://alexpedersen.dev/en/notes/better-resource-monitor/)
 is useful supporting context but is not independent validation.
 
-## Proof status
-
-- Verified customer testimonials or case studies: none in the current
-  evidence set.
-- Verified third-party editorial/directory mentions: yes, listed above.
-- Verified third-party benchmark data: no. The comparison tables' competitor
-  figures remain approximate and time-sensitive.
-- Verified AI answer transcript or AI Overview citation: no. The Tenten page is
-  an AI-tagged search-surface observation, and the temporary ChatGPT run was
-  submitted but not captured; neither is a verified answer transcript.
-- Required conduct: do not manufacture reviews, ask customers to repeat a
-  prescribed claim, or turn a directory mention into a customer endorsement.
-
-Legitimate future opportunities are to keep the existing listings accurate,
-offer canonical corrections when a third party has a factual error, and invite
-users who independently describe a real workflow to share it voluntarily.
-
 ## Repeatable tracking protocol
 
-Run this matrix on a fixed cadence (monthly or after a material content or
-release change) and save a dated copy of the results. Use the same prompt text,
-locale, logged-out state, and location where possible.
+Repeat the fixed matrix monthly or after material content changes. Keep prompt
+text, locale, logged-out state, and location consistent, and record dated results
+in the tracking CSV.
 
-The repository capture is in
-[`ai-recommendation-tracking.csv`](./ai-recommendation-tracking.csv), and the
-deployed public copies are
-[`ai-recommendation-baseline.md`](https://better-resource-monitor.alexpedersen.dev/ai-recommendation-baseline.md)
-and
-[`ai-recommendation-tracking.csv`](https://better-resource-monitor.alexpedersen.dev/ai-recommendation-tracking.csv).
-They are a starter log, not an analytics export; rows must retain
-`unavailable` until an authorized platform or analytics source supplies a
-measurement.
-
-After an authorized deployment, run the repeatable live verifier from the repo
-root:
+Check deployed content from the repository root:
 
 ```sh
 node scripts/verify-ai-recommendation-live.mjs
 ```
 
-It accepts `AI_RECOMMENDATION_BASE_URL` for preview or staging verification and
-fails if any supported locale, comparison, `llms.txt`, or agent-facts marker is
-missing.
+Set `AI_RECOMMENDATION_BASE_URL` to check a preview or staging deployment.
 
 For every prompt and surface, record:
 
@@ -214,48 +120,12 @@ report is connected, landing-page visits and conversions must remain
 `unavailable`; do not infer them from rankings, impressions, GitHub stars, or
 App Store visibility.
 
-## Current implementation verification
+## Verification (2026-08-09)
 
-The repository implementation includes the best-fit and not-best-fit answers
-in all four locales, the comparison hub's buyer-oriented title and intro, and
-matching recommendation boundaries in `llms.txt` and `agent-facts.json`. The
-machine-readable sources expose the same 20-item P0/P1 matrix. `pnpm build:www`
-produced all 29 static routes.
+The website build generated 29 pages. The live verifier and rendered checks
+confirmed the four localized home pages, comparison content, public evidence
+files, `llms.txt`, and `agent-facts.json`.
 
-On 2026-08-09,
-`node scripts/verify-ai-recommendation-live.mjs` passed against the public
-base URL, checking the four home routes, comparison hub, both public evidence
-artifacts, `llms.txt`, and `agent-facts.json`. Browser-rendered production
-checks also exposed the new home fit boundaries and buyer-oriented comparison
-cards across the supported locales.
-
-## Second-pass audit (2026-08-09)
-
-- Production content and machine-readable surfaces are live and pass the
-  public verifier.
-- The baseline and structured tracking log are now published at stable HTTPS
-  URLs and linked from `agent-facts.json` and `llms.txt`.
-- `llms.txt` and `agent-facts.json` now carry the same 20 prompt targets.
-- Both attempted ChatGPT runs are recorded as `unmeasured`; no answer,
-  ranking, or citation is inferred.
-- A current search refresh still returns the official site for product-intent
-  queries. The MAC-DVD roundup still shows an incorrect `Open Source = No`
-  entry for Better Resource Monitor; keep it tracked as a correction
-  opportunity rather than repeating it as evidence.
-- Website/app analytics and verified customer proof remain unavailable.
-
-## Ongoing follow-up gates
-
-The implementation and production deployment are complete. These are recurring
-measurement and evidence tasks, not claims that have already been observed:
-
-1. All P0 prompts have a direct, accurate canonical answer and a stable URL.
-2. The same product boundary is represented in the four supported locales.
-3. The next AI/search run records exact answers, citations, and competitor
-   context rather than a ranking claim without evidence.
-4. Independent mentions are separated from customer proof, and factual
-   conflicts are tracked rather than repeated.
-5. The site build and live rendered pages expose the revised answers, while
-   unavailable analytics remain explicitly labeled as unavailable.
-6. `node scripts/verify-ai-recommendation-live.mjs` passes against the public
-   deployment, not only against a local preview.
+Direct AI answers, customer proof, and analytics remained unavailable. Future
+runs should record exact answers and citations before making ranking or
+conversion claims.

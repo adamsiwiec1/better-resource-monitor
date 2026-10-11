@@ -1,135 +1,56 @@
 # Contributing to Better Resource Monitor
 
-Thanks for helping improve Better Resource Monitor. This guide is for human
-contributors; agent-specific repo notes live in [AGENTS.md](AGENTS.md), and
-release mechanics are owned by the workflow files, scripts, and Tauri config.
+## Development
 
-## Getting Started
+Install [Tauri v2 prerequisites](https://v2.tauri.app/start/prerequisites/)
+and pnpm, then run from the repository root:
 
-1. Fork the repository and clone your fork.
-2. Install dependencies with `pnpm install`.
-3. Run the app with `pnpm tauri dev`.
-4. For the website, use `pnpm dev:www`, `pnpm build:www`,
-   `pnpm preview:www`, and `pnpm build:screenshots` from the repo root.
-
-Rust checks run from `src-tauri/` unless a workflow says otherwise:
-
-```bash
-cd src-tauri
-cargo fmt
-cargo test
-cargo clippy
-cargo llvm-cov --lib --html --output-dir coverage/
+```sh
+pnpm install
+pnpm dev
+pnpm build
 ```
 
-## Development Workflow
+Use `pnpm dev` for local testing. Installed macOS releases must be built through
+the distribution workflows and run from `/Applications/Better Resource Monitor.app`.
 
-Keep branches focused and short-lived. Use an intent prefix such as `docs/`,
-`fix/`, `feat/`, or `chore/` so reviewers can scan the branch purpose. If you
-are working from a dirty local checkout, create a temporary clone or worktree for
-the pull request so unrelated changes do not leak into the diff.
-
-Pull requests should explain:
-
-- what changed and why;
-- which user, contributor, or release path is affected;
-- which checks were run, or why a narrower check is enough;
-- follow-up work that is intentionally left out of scope.
+See [www/README.md](www/README.md) for website development.
 
 ## Validation
 
-CI runs JavaScript dependency auditing, locale parity, tooling tests, website
-type checking (`pnpm --filter www check`), the website build (`pnpm build:www`),
-and Cloudflare Pages deployment verification on Linux. App source, dependency,
-and build-tooling changes also run `cargo fmt --check`, `cargo test`,
-`cargo clippy -- -D warnings`, `cargo audit`, and the app bundle layout check
-on an Intel macOS runner. Tests, clippy, and bundling already compile the Intel
-target, so CI does not repeat a separate `cargo check` compilation.
+For app changes, run from `src-tauri/`:
 
-Website/docs-only changes skip the macOS job. The existing required `Rust checks`
-result requires every applicable job to pass, including website verification.
-CI runs for pull requests, pushes to `main`, and manual dispatches; use a PR or
-manual dispatch to check a feature branch. Manual dispatches always run the full
-checks, including the release workflow's version-bump PR. Run the relevant
-subset locally before opening a pull request.
+```sh
+cargo fmt --check
+cargo test
+cargo clippy -- -D warnings
+```
 
-Docs-only changes still need enough proof for the claims they make. A wording
-fix can usually be reviewed with a focused diff check. A docs change that
-describes Rust/Tauri behavior, release packaging, CI gates, App Store signing,
-Start at login, GPU sampling, or bundle layout should wait for the relevant CI
-or Rust proof before merge.
+For website changes, run `pnpm check:www` and `pnpm build:www` from the root.
+[CI](.github/workflows/ci.yml) defines the complete checks.
 
-### Generated Assets And Screenshots
+App-impacting PRs also require pre-merge TestFlight against the exact PR head.
+Behavior and tray changes need confirmation from a real tester.
+See [AGENTS.md](AGENTS.md#releases) for the workflow command.
 
-Commit generated App Store screenshots, icons, metadata, or marketing tray art
-only when the source change intentionally modifies shipped visuals, copy, or
-assets. For screenshot updates, run `pnpm build:screenshots` and include the
-generated file diff or before/after images for the affected languages or states.
+## Pull requests
 
-If renderer logic, tray visuals, marketing copy, fonts, or output paths changed,
-name the source file or command that produced the generated assets. Avoid
-committing generated churn when the source did not intentionally change them.
-Include generated diffs or before/after evidence in the pull request, and state
-explicitly if regeneration is intentionally deferred.
+Keep changes focused. Explain the problem, the change, and how you checked it.
 
-For website changes, run `pnpm build:www`. For Rust or app behavior changes,
-run the focused Rust command first, then broaden to the full checks when the
-change touches shared behavior or release packaging.
+- Regenerate affected screenshots with `pnpm build:screenshots` and include
+  the resulting diff or before/after images. Generate tray art from the app
+  renderer, as that command does.
+- Update matching localized content when product claims change.
+  Root `README*.md` files also supply the website home page body.
+- App Store uploads go through the [TestFlight workflow](.github/workflows/testflight.yml).
+  The [release workflow](.github/workflows/release.yml) handles releases.
 
-## Release Workflow Changes
+## Questions and reports
 
-Treat executable files as the source of truth. Release and TestFlight behavior
-is defined by `.github/workflows/release.yml`,
-`.github/workflows/testflight.yml`, `scripts/build-appstore-bundle.sh`,
-`scripts/setup-appstore-signing.sh`, `scripts/upload-appstore-package.sh`,
-`src-tauri/tauri.appstore.conf.json`, `src-tauri/Cargo.lock`, and
-`src-tauri/Entitlements.appstore.plist`.
+Use [Discussions](https://github.com/alexx855/better-resource-monitor/discussions)
+for questions and proposals, and
+[Issues](https://github.com/alexx855/better-resource-monitor/issues)
+for bugs and agreed work. Bug reports should include the macOS version, chip,
+steps to reproduce, and expected versus actual behavior.
 
-The App Store upload path is GitHub Actions only. Use the `TestFlight` workflow
-for validation uploads; there is no supported local App Store packaging script
-or fallback.
-
-Release documentation should explain how those files fit together without
-copying long YAML or shell fragments into prose. If a branch temporarily changes
-the intended workflow, describe that in the pull request body or a temporary
-handoff note, then fold only durable guidance into mainline docs.
-
-## Localization And Marketing Copy
-
-When a change affects a user-facing promise, update the related localized and
-marketing surfaces together. This includes supported platforms, install paths,
-release availability, sandboxing/no-root claims, privacy/no-telemetry claims,
-pricing, and comparison language.
-
-Internal contributor wording can usually change in one file. Product positioning
-should move across the matching root `README*.md` files, which feed the website
-home body, `www/src/lib/marketing-copy.json`, and `src-tauri/src/i18n.rs` in
-the same pull request, or call out the deferred localization follow-up
-explicitly.
-
-## Discussions vs Issues
-
-Use [GitHub Discussions](https://github.com/alexx855/better-resource-monitor/discussions)
-for questions, design tradeoffs, validation policy, contributor workflow
-clarification, and support-style conversations where the answer may shape later
-work. Start uncertain process questions there, then open an issue once the
-desired change is concrete.
-
-Use [GitHub Issues](https://github.com/alexx855/better-resource-monitor/issues)
-for reproducible bugs, accepted implementation tasks, or tracked docs/product
-changes with clear acceptance criteria. If a discussion reveals a real defect or
-durable docs gap, link the follow-up issue back to the discussion so the
-decision trail is easy to find.
-
-## Reporting Issues
-
-When reporting bugs, please include:
-
-- macOS version and chip (Intel/Apple Silicon)
-- steps to reproduce
-- expected vs actual behavior
-- screenshots if applicable
-
-## Questions?
-
-If you are not sure where something belongs, start with [GitHub Discussions](https://github.com/alexx855/better-resource-monitor/discussions).
+Report vulnerabilities as described in [SECURITY.md](SECURITY.md).

@@ -65,7 +65,7 @@
     },
     {
       "heading": "Por que o Better Resource Monitor fica mais leve",
-      "body": "O Better Resource Monitor usa menos de 0,1% de CPU no Apple Silicon e cerca de 15 MB de memória. Esse consumo menor vem de um conjunto de recursos mais enxuto e de evitar a consulta constante de sensores em que apps mais pesados de monitoramento se apoiam. Ele foi feito para ficar aberto o dia todo sem parecer mais um peso para o seu Mac."
+      "body": "O Better Resource Monitor usa menos de 0,1% de CPU no Apple Silicon e cerca de 15 MB de memória. Ele foi feito para ficar aberto o dia todo sem parecer mais um peso para o seu Mac."
     },
     {
       "heading": "Menos atrito também importa",

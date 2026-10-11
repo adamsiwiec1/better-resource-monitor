@@ -141,15 +141,10 @@ async function main() {
       const svg = await satori(buildElement(badge, locale), { width: WIDTH, height: HEIGHT, fonts });
       const png = new Resvg(svg, { fitTo: { mode: "width", value: WIDTH } }).render().asPng();
       const webp = await sharp(png).webp({ lossless: true }).toBuffer();
-      const localizedOutPath = join(OUT_DIR, `${name}-${locale}.webp`);
+      const suffix = locale === "en" ? "" : `-${locale}`;
+      const localizedOutPath = join(OUT_DIR, `${name}${suffix}.webp`);
       writeFileSync(localizedOutPath, webp);
-      console.log(`${name}-${locale}.webp (${webp.length} bytes)`);
-
-      if (locale === "en") {
-        const legacyOutPath = join(OUT_DIR, `${name}.webp`);
-        writeFileSync(legacyOutPath, webp);
-        console.log(`${name}.webp (${webp.length} bytes)`);
-      }
+      console.log(`${name}${suffix}.webp (${webp.length} bytes)`);
     }
   }
 

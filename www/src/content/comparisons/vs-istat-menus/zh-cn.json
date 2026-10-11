@@ -65,7 +65,7 @@
     },
     {
       "heading": "为什么 Better Resource Monitor 更轻量",
-      "body": "在 Apple Silicon 上，Better Resource Monitor 的 CPU 占用低于 0.1%，内存大约 15 MB。较低的开销来自更克制的功能范围，以及不去依赖那些更重型监控应用常见的持续传感器轮询。它就是为了让你能整天开着，也不会觉得 Mac 又多背了一个包袱。"
+      "body": "在 Apple Silicon 上，Better Resource Monitor 的 CPU 占用低于 0.1%，内存大约 15 MB。它就是为了让你能整天开着，也不会觉得 Mac 又多背了一个包袱。"
     },
     {
       "heading": "更少折腾也很重要",

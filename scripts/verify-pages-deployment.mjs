@@ -11,7 +11,7 @@ const redirectChecks = [
 ];
 
 const titleChecks = [
-  ["/", "Better Resource Monitor | Lightweight macOS Menu Bar Monitor"],
+  ["/", "Better Resource Monitor | macOS Resource Monitor for the Menu Bar"],
   ["/comparison/", "Mac Menu Bar Monitor Comparisons | Better Resource Monitor"],
 ];
 

@@ -194,6 +194,63 @@ pub(crate) fn is_selectable_mount_point(mount_point: &Path, layout: MountLayout)
     }
 }
 
+/// Returns true for file systems that live on another machine, such as
+/// `fuse.sshfs`, `smb3` or `ceph`, compared case-insensitively.
+///
+/// These are kept out of the storage disk menu. Checking the
+/// capacity of a hard-mounted share whose server has gone away can block for
+/// minutes, and the chosen disk is checked on every update, so offering one
+/// could freeze the whole tray.
+///
+/// sysinfo already leaves out `nfs`, `nfs4`, `cifs` and `autofs` on Linux, and
+/// leaves out every volume macOS does not report as local. They are listed
+/// here anyway so the menu stays safe if a sysinfo update or feature flag
+/// changes that.
+///
+/// Local FUSE file systems, such as `fuseblk` (NTFS and exFAT drives),
+/// `fuse.mergerfs` pools, and encrypted folders, are still offered.
+pub(crate) fn is_network_file_system(file_system: &OsStr) -> bool {
+    const NETWORK_FILE_SYSTEMS: &[&str] = &[
+        // Kernel network and cluster file systems (Linux).
+        "nfs",
+        "nfs4",
+        "cifs",
+        "smb3",
+        "smbfs",
+        "autofs",
+        "9p",
+        "afs",
+        "ceph",
+        "coda",
+        "davfs",
+        "glusterfs",
+        "lustre",
+        "ncpfs",
+        "gpfs",
+        "beegfs",
+        // Network file systems (macOS).
+        "afpfs",
+        "webdav",
+        // FUSE clients for remote storage, named `fuse.<program>` on Linux.
+        "fuse.sshfs",
+        "fuse.rclone",
+        "fuse.s3fs",
+        "fuse.gvfsd-fuse",
+        "fuse.curlftpfs",
+    ];
+    const NETWORK_FUSE_PREFIXES: &[&str] = &[
+        "fuse.ceph",
+        "fuse.glusterfs",
+        "fuse.juicefs",
+        "fuse.gcsfuse",
+    ];
+    let file_system = file_system.to_string_lossy().to_ascii_lowercase();
+    NETWORK_FILE_SYSTEMS.contains(&file_system.as_str())
+        || NETWORK_FUSE_PREFIXES
+            .iter()
+            .any(|prefix| file_system.starts_with(prefix))
+}
+
 /// Returns the mount point that holds `path`: the longest mount point that
 /// `path` starts with.
 pub(crate) fn mount_point_containing<'a>(
@@ -292,8 +349,8 @@ pub(crate) fn resolve_sample_path(
 }
 
 /// Keeps the list of mounted volumes up to date. Listing volumes is cheap but
-/// not free, so the monitor loop calls [`VolumeWatcher::refresh`] every few
-/// seconds rather than on every tick.
+/// not free, and it can block on a stale mount, so a background thread calls
+/// [`VolumeWatcher::refresh`] every few seconds, never the monitor loop.
 pub(crate) struct VolumeWatcher {
     disks: sysinfo::Disks,
 }
@@ -315,12 +372,13 @@ impl VolumeWatcher {
             self.disks
                 .list()
                 .iter()
+                .filter(|disk| !is_network_file_system(disk.file_system()))
                 .map(|disk| (disk.name(), disk.mount_point())),
             &home_path_or_root(),
             CURRENT_MOUNT_LAYOUT,
         );
-        // Leave out volumes that will not report their capacity, such as
-        // some network or FUSE mounts, so every choice in the menu works.
+        // Leave out volumes that will not report their capacity, such as an
+        // unreadable FUSE mount, so every choice in the menu works.
         volumes.retain(|volume| sample_at(&volume.mount_point).is_some());
         volumes
     }

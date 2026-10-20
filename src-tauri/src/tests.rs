@@ -364,6 +364,55 @@ fn test_selectable_volumes_on_linux() {
 }
 
 #[test]
+fn test_network_file_systems_are_not_offered() {
+    use std::ffi::OsStr;
+
+    // Checking capacity on these can block for minutes when the server is gone.
+    for file_system in [
+        "nfs",
+        "nfs4",
+        "cifs",
+        "smb3",
+        "9p",
+        "ceph",
+        "afpfs",
+        "webdav",
+        "fuse.sshfs",
+        "fuse.rclone",
+        "fuse.gvfsd-fuse",
+        "fuse.ceph-fuse",
+        "fuse.juicefs",
+        "FUSE.SSHFS",
+    ] {
+        assert!(
+            storage::is_network_file_system(OsStr::new(file_system)),
+            "{file_system} should count as a network file system"
+        );
+    }
+
+    // Local disks, including FUSE ones such as NTFS drives and mergerfs pools,
+    // stay in the menu.
+    for file_system in [
+        "ext4",
+        "btrfs",
+        "xfs",
+        "vfat",
+        "exfat",
+        "apfs",
+        "hfs",
+        "fuseblk",
+        "fuse.mergerfs",
+        "fuse.gocryptfs",
+        "",
+    ] {
+        assert!(
+            !storage::is_network_file_system(OsStr::new(file_system)),
+            "{file_system:?} should count as a local file system"
+        );
+    }
+}
+
+#[test]
 fn test_resolve_sample_path_falls_back_to_home() {
     let home = Path::new("/Users/adam");
     let volumes = [volume("Backup", "/Volumes/Backup")];

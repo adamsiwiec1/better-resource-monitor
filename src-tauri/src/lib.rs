@@ -237,8 +237,8 @@ fn save_storage_volume(app: &AppHandle, mount_point: Option<&Path>) {
 }
 
 const UPDATE_INTERVAL_MS: u64 = 2000;
-/// How many monitor ticks pass between re-reading the mounted volumes, so a
-/// drive that is plugged in shows up in the menu within about 10 seconds.
+/// How many update intervals pass between re-reading the mounted volumes, so
+/// a drive that is plugged in shows up in the menu within about 10 seconds.
 const VOLUME_REFRESH_TICKS: u32 = 5;
 const CPU_STABILIZE_MS: u64 = 200;
 #[cfg(target_os = "macos")]
@@ -723,7 +723,7 @@ struct StorageDiskState {
 struct StorageDiskInner {
     /// The chosen volume's mount point, or `None` for the startup disk.
     selected: Option<PathBuf>,
-    /// Volumes offered in the menu, as last read by the monitor thread.
+    /// Volumes offered in the menu, as last read by the volume watcher thread.
     volumes: Vec<storage::Volume>,
     /// Lives here so only the main thread touches it; see
     /// [`request_storage_menu_sync`].
@@ -1404,6 +1404,39 @@ fn handle_second_instance_launch(
     }
 }
 
+/// Keeps the storage disk menu's volume list up to date on its own thread.
+///
+/// Listing volumes and checking that each one reports its capacity are file
+/// system calls, and on a stale network or FUSE mount they can block for a
+/// long time. Running them here instead of on the monitor thread means a slow
+/// mount can only delay the menu; CPU, memory, GPU, network and storage keep
+/// updating.
+fn start_volume_watcher(app: AppHandle, show_storage: Arc<AtomicBool>) {
+    let poll_interval = Duration::from_millis(get_update_interval_ms());
+    thread::spawn(move || {
+        let mut watcher = storage::VolumeWatcher::new();
+        let mut volumes: Vec<storage::Volume> = Vec::new();
+        let mut ticks: u32 = 0;
+        loop {
+            if show_storage.load(Relaxed) {
+                if ticks.is_multiple_of(VOLUME_REFRESH_TICKS) {
+                    let refreshed = watcher.refresh();
+                    if refreshed != volumes {
+                        volumes = refreshed;
+                        app.state::<StorageDiskState>().lock().volumes = volumes.clone();
+                        request_storage_menu_sync(&app);
+                    }
+                }
+                ticks = ticks.wrapping_add(1);
+            } else {
+                // Re-read volumes as soon as storage is shown again.
+                ticks = 0;
+            }
+            thread::sleep(poll_interval);
+        }
+    });
+}
+
 fn start_monitoring(
     app: AppHandle,
     font: Font<'static>,
@@ -1431,9 +1464,6 @@ fn start_monitoring(
         let mut prev_storage_available: Option<String> = None;
         let mut prev_storage_available_bytes: Option<u64> = None;
         let mut last_storage_sample: Option<storage::StorageSample> = None;
-        let mut volume_watcher = storage::VolumeWatcher::new();
-        let mut volumes: Vec<storage::Volume> = Vec::new();
-        let mut volume_ticks: u32 = 0;
         let mut last_storage_path: Option<PathBuf> = None;
         let mut prev_gpu: f32 = -100.0;
         let mut prev_down_speed: f64 = -1.0;
@@ -1524,22 +1554,14 @@ fn start_monitoring(
             };
 
             if ss {
-                if volume_ticks.is_multiple_of(VOLUME_REFRESH_TICKS) {
-                    let refreshed = volume_watcher.refresh();
-                    if refreshed != volumes {
-                        volumes = refreshed;
-                        app.state::<StorageDiskState>().lock().volumes = volumes.clone();
-                        request_storage_menu_sync(&app);
-                    }
-                }
-                volume_ticks = volume_ticks.wrapping_add(1);
-
-                let selected = app.state::<StorageDiskState>().lock().selected.clone();
-                let storage_path = storage::resolve_sample_path(
-                    selected.as_deref(),
-                    &volumes,
-                    &storage::home_path_or_root(),
-                );
+                // The volume list comes from `start_volume_watcher`, so a slow
+                // mount can never hold up this loop.
+                let home = storage::home_path_or_root();
+                let storage_path = {
+                    let state = app.state::<StorageDiskState>();
+                    let inner = state.lock();
+                    storage::resolve_sample_path(inner.selected.as_deref(), &inner.volumes, &home)
+                };
                 // Sample right away when the disk changes, so a new choice
                 // shows up on the next frame instead of up to two ticks later.
                 let disk_changed = last_storage_path.as_ref() != Some(&storage_path);
@@ -1551,9 +1573,6 @@ fn start_monitoring(
                         last_storage_path = Some(storage_path);
                     }
                 }
-            } else {
-                // Re-read volumes as soon as storage is shown again.
-                volume_ticks = 0;
             }
             let storage_sample = if ss { last_storage_sample } else { None };
             let storage_available_str = storage_sample
@@ -1830,6 +1849,7 @@ pub fn run() {
                 thermal_status,
             )?;
 
+            start_volume_watcher(app.handle().clone(), metrics.show_storage.clone());
             start_monitoring(
                 app.handle().clone(),
                 font,

@@ -19,8 +19,8 @@ Better Resource Monitor („Aplikacja”) to aplikacja na komputer, która wyśw
 Aplikacja działa w całości lokalnie na Twoim urządzeniu. Wszystkie informacje o systemie (użycie CPU, pamięci i dysku, aktywność sieciowa, statystyki GPU) są:
 - odczytywane bezpośrednio z systemu operacyjnego,
 - wyświetlane wyłącznie na Twoim ekranie,
-- nigdy nie przesyłane na żadne zewnętrzne serwery,
-- nigdy nie zapisywane w żadnej zewnętrznej bazie danych.
+- nigdy nieprzesyłane na żadne zewnętrzne serwery,
+- nigdy niezapisywane w żadnej zewnętrznej bazie danych.
 
 Użycie dysku jest obliczane na podstawie całkowitej i wolnej pojemności głównego woluminu użytkownika, zgłaszanej przez system operacyjny. Aplikacja nie odczytuje nazw plików, zawartości plików, woluminów zewnętrznych ani szczegółów poszczególnych woluminów.
 

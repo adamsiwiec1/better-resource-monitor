@@ -1133,6 +1133,7 @@ fn network_speed_ignores_loopback_tunnels_and_virtual_bridges() {
         "veth12ab34c",
         "virbr0",
         "vmnet8",
+        "vmenet0",
         "vboxnet0",
         "bridge100",
         "bridge101",

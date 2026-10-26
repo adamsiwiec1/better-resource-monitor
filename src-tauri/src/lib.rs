@@ -387,6 +387,7 @@ fn counts_toward_network_speed(name: &str) -> bool {
         "docker",
         "virbr",
         "vmnet",
+        "vmenet",
         "vboxnet",
     ];
     // Stems with free-form suffixes: Linux bridges (br-1a2b3c) and veth pairs.

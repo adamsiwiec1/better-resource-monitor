@@ -1463,8 +1463,7 @@ fn start_monitoring(
         let mut prev_mem: f32 = -100.0;
         let mut prev_storage_available: Option<String> = None;
         let mut prev_storage_available_bytes: Option<u64> = None;
-        let mut last_storage_sample: Option<storage::StorageSample> = None;
-        let mut last_storage_path: Option<PathBuf> = None;
+        let mut storage_sampler = storage::StorageSampler::default();
         let mut prev_gpu: f32 = -100.0;
         let mut prev_down_speed: f64 = -1.0;
         let mut prev_up_speed: f64 = -1.0;
@@ -1553,28 +1552,17 @@ fn start_monitoring(
                 0.0
             };
 
-            if ss {
-                // The volume list comes from `start_volume_watcher`, so a slow
-                // mount can never hold up this loop.
+            let storage_sample = if ss {
                 let home = storage::home_path_or_root();
                 let storage_path = {
                     let state = app.state::<StorageDiskState>();
                     let inner = state.lock();
                     storage::resolve_sample_path(inner.selected.as_deref(), &inner.volumes, &home)
                 };
-                // Sample right away when the disk changes, so a new choice
-                // shows up on the next frame instead of up to two ticks later.
-                let disk_changed = last_storage_path.as_ref() != Some(&storage_path);
-                if full_tick || disk_changed {
-                    // On a failed read, keep the last numbers and try again
-                    // next tick.
-                    if let Some(sample) = storage::sample_at(&storage_path) {
-                        last_storage_sample = Some(sample);
-                        last_storage_path = Some(storage_path);
-                    }
-                }
-            }
-            let storage_sample = if ss { last_storage_sample } else { None };
+                storage_sampler.poll(&storage_path, full_tick)
+            } else {
+                None
+            };
             let storage_available_str = storage_sample
                 .map(|sample| format_storage_available(sample.available_bytes))
                 .unwrap_or_else(|| "0.0 KB".to_string());

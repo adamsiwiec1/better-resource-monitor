@@ -1,6 +1,7 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::ffi::OsStr;
 use std::path::{Path, PathBuf};
+use std::sync::mpsc::{self, Receiver, TryRecvError};
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub(crate) struct StorageSample {
@@ -346,6 +347,56 @@ pub(crate) fn resolve_sample_path(
         })
         .map(Path::to_path_buf)
         .unwrap_or_else(|| home.to_path_buf())
+}
+
+/// Samples disks without waiting for filesystem calls on the monitor thread.
+/// Only one read per path can be in flight, even if that disk stops responding.
+/// Switching disks clears the displayed sample and can start another read while
+/// the old one is blocked; results from other paths are discarded.
+#[derive(Default)]
+pub(crate) struct StorageSampler {
+    path: Option<PathBuf>,
+    sample: Option<StorageSample>,
+    pending: HashMap<PathBuf, Receiver<Option<StorageSample>>>,
+}
+
+impl StorageSampler {
+    pub(crate) fn poll(&mut self, path: &Path, refresh: bool) -> Option<StorageSample> {
+        self.poll_with(path, refresh, sample_at)
+    }
+
+    pub(crate) fn poll_with(
+        &mut self,
+        path: &Path,
+        refresh: bool,
+        sample: impl FnOnce(&Path) -> Option<StorageSample> + Send + 'static,
+    ) -> Option<StorageSample> {
+        let changed = self.path.as_deref() != Some(path);
+        if changed {
+            self.path = Some(path.to_path_buf());
+            self.sample = None;
+        }
+        self.pending
+            .retain(|pending_path, receiver| match receiver.try_recv() {
+                Ok(result) => {
+                    if pending_path == path {
+                        self.sample = result;
+                    }
+                    false
+                }
+                Err(TryRecvError::Empty) => true,
+                Err(TryRecvError::Disconnected) => false,
+            });
+        if (refresh || changed) && !self.pending.contains_key(path) {
+            let (sender, receiver) = mpsc::channel();
+            let sample_path = path.to_path_buf();
+            std::thread::spawn(move || {
+                let _ = sender.send(sample(&sample_path));
+            });
+            self.pending.insert(path.to_path_buf(), receiver);
+        }
+        self.sample
+    }
 }
 
 /// Keeps the list of mounted volumes up to date. Listing volumes is cheap but

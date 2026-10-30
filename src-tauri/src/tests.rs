@@ -465,6 +465,91 @@ fn test_volume_watcher_lists_mounted_volumes() {
 }
 
 #[test]
+fn test_storage_sampler_rejects_previous_disk_and_failed_reads() {
+    use std::sync::mpsc;
+    use std::time::{Duration, Instant};
+
+    let mut sampler = storage::StorageSampler::default();
+    let disk_a = Path::new("/Volumes/A");
+    let disk_b = Path::new("/Volumes/B");
+    let sample_a = storage::sample_from_bytes(1_000, 250).unwrap();
+    let (release_a, blocked_a) = mpsc::channel();
+    assert_eq!(
+        sampler.poll_with(disk_a, true, move |_| {
+            blocked_a.recv().unwrap();
+            Some(sample_a)
+        }),
+        None
+    );
+    // A blocked read must neither block polling nor start duplicate workers.
+    let (duplicate, duplicates) = mpsc::channel();
+    for _ in 0..10 {
+        let duplicate = duplicate.clone();
+        assert_eq!(
+            sampler.poll_with(disk_a, true, move |_| {
+                duplicate.send(()).unwrap();
+                None
+            }),
+            None
+        );
+    }
+    assert_eq!(
+        duplicates.recv_timeout(Duration::from_millis(100)),
+        Err(mpsc::RecvTimeoutError::Timeout)
+    );
+    assert_eq!(sampler.poll_with(disk_b, true, |_| None), None);
+    release_a.send(()).unwrap();
+    // A's late result must never appear while B is selected.
+    let deadline = Instant::now() + Duration::from_millis(100);
+    while Instant::now() < deadline {
+        assert_eq!(sampler.poll_with(disk_b, false, |_| None), None);
+        std::thread::yield_now();
+    }
+    let deadline = Instant::now() + Duration::from_secs(2);
+    loop {
+        if sampler.poll_with(disk_a, false, move |_| Some(sample_a)) == Some(sample_a) {
+            break;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "background disk read did not complete"
+        );
+        std::thread::yield_now();
+    }
+    // Even after A was displayed successfully, a failing B clears its value.
+    assert_eq!(sampler.poll_with(disk_b, false, |_| None), None);
+}
+
+#[test]
+fn test_storage_sampler_can_switch_away_from_a_blocked_disk() {
+    use std::sync::mpsc;
+    use std::time::{Duration, Instant};
+
+    let mut sampler = storage::StorageSampler::default();
+    let (release, blocked) = mpsc::channel();
+    let stuck = Path::new("/Volumes/Stuck");
+    let home = Path::new("/home/test");
+    let sample = storage::sample_from_bytes(10_000, 8_000).unwrap();
+    sampler.poll_with(stuck, true, move |_| {
+        blocked.recv().unwrap();
+        None
+    });
+    assert_eq!(sampler.poll_with(home, true, move |_| Some(sample)), None);
+    let deadline = Instant::now() + Duration::from_secs(2);
+    loop {
+        if sampler.poll_with(home, false, |_| panic!("unexpected read")) == Some(sample) {
+            break;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "healthy disk was blocked by old disk"
+        );
+        std::thread::yield_now();
+    }
+    release.send(()).unwrap();
+}
+
+#[test]
 fn test_storage_volume_menu_ids_round_trip() {
     assert_eq!(
         storage_volume_from_menu_id(STORAGE_VOLUME_STARTUP_ID),

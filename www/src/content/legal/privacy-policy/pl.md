@@ -6,7 +6,7 @@ ogImage: "/images/og-privacy-pl.png"
 
 # Polityka prywatności
 
-**Ostatnia aktualizacja: styczeń 2026**
+**Ostatnia aktualizacja: 29 października 2026**
 
 ## Informacje ogólne
 
@@ -26,7 +26,9 @@ Użycie dysku jest obliczane na podstawie całkowitej i wolnej pojemności głó
 
 ## Przechowywanie danych
 
-Aplikacja przechowuje lokalnie na Twoim urządzeniu wyłącznie Twoje preferencje (na przykład to, które wskaźniki mają być wyświetlane, oraz ustawienia wyglądu), korzystając ze standardowego mechanizmu konfiguracji systemu operacyjnego. Te dane nigdy nie opuszczają Twojego komputera.
+Aplikacja przechowuje Twoje preferencje (na przykład to, które wskaźniki mają być wyświetlane, oraz ustawienia wyglądu) lokalnie na Twoim urządzeniu, korzystając ze standardowego mechanizmu konfiguracji systemu operacyjnego.
+
+W systemie macOS Aplikacja zapisuje również wpisy diagnostyczne ze znacznikami czasu w lokalnych plikach `autostart.log` w katalogach dzienników Library, w tym w kontenerze aplikacji. Pomagają one diagnozować problemy z uruchamianiem, uruchamianiem po zalogowaniu i działaniem paska menu. Dzienniki mogą zawierać wersję Aplikacji i identyfikator commitu kompilacji, stan rejestracji elementu logowania, wybrane ustawienia, zdarzenia uruchamiania i paska menu, komunikaty o błędach oraz lokalne ścieżki plików (na przykład pliku wykonywalnego, potwierdzenia zakupu w App Store i blokady procesu). Preferencje i dzienniki diagnostyczne pozostają na Twoim urządzeniu; Aplikacja ich nie przesyła.
 
 ## Usługi stron trzecich
 

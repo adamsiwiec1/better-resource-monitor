@@ -72,6 +72,15 @@ Alerty są wyłącznie wizualne. Prędkość sieci i ukryte wskaźniki ich nie w
 
 Pobierz aplikację z <a href="https://apps.apple.com/app/better-resource-monitor/id6758237306" target="_blank">Mac App Store</a> (z automatycznymi aktualizacjami) lub pobierz plik `.dmg` z <a href="https://github.com/alexx855/better-resource-monitor/releases" target="_blank">GitHub Releases</a> (bez automatycznych aktualizacji; każdą nową wersję trzeba pobrać i zainstalować ręcznie).
 
+### Homebrew
+
+```bash
+brew tap alexx855/better-resource-monitor https://github.com/alexx855/better-resource-monitor
+brew install --cask alexx855/better-resource-monitor/better-resource-monitor
+```
+
+`brew upgrade --cask better-resource-monitor` instaluje nowe wersje po aktualizacji definicji cask.
+
 ### Zgodność
 
 Działa na Macach z procesorami Intel i Apple Silicon z systemem macOS Ventura 13 lub nowszym.

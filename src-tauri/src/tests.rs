@@ -1129,6 +1129,9 @@ fn network_speed_ignores_loopback_tunnels_and_virtual_bridges() {
         "stf0",
         "tailscale0",
         "docker0",
+        "docker_gwbridge",
+        "podman0",
+        "podman12",
         "br-3f2a9c1d4e5b",
         "veth12ab34c",
         "virbr0",
@@ -1166,6 +1169,9 @@ fn network_speed_keeps_physical_and_peer_to_peer_links() {
         "lowpan0",
         "tunnel-like",
         "wgx",
+        "podman-like",
+        "docker_gwbridge-uplink",
+        "vmenet-uplink",
     ] {
         assert!(
             counts_toward_network_speed(name),
@@ -1182,6 +1188,9 @@ fn network_totals_skip_excluded_interfaces() {
         ("utun4", 4_000, 600),
         ("en5", 250, 50),
         ("bridge100", 1_000, 1_000),
+        ("vmenet0", 2_000, 2_000),
+        ("docker_gwbridge", 3_000, 3_000),
+        ("podman0", 4_000, 4_000),
     ];
     assert_eq!(sum_interface_totals(interfaces), (5_250, 750));
 }

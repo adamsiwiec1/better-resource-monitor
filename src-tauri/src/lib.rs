@@ -385,6 +385,7 @@ fn counts_toward_network_speed(name: &str) -> bool {
         "stf",
         "tailscale",
         "docker",
+        "podman",
         "virbr",
         "vmnet",
         "vmenet",
@@ -398,7 +399,8 @@ fn counts_toward_network_speed(name: &str) -> bool {
             .filter(|rest| rest.bytes().all(|b| b.is_ascii_digit()))
     };
 
-    if NUMBERED.iter().any(|stem| unit(stem).is_some())
+    if name == "docker_gwbridge"
+        || NUMBERED.iter().any(|stem| unit(stem).is_some())
         || PREFIXED.iter().any(|stem| name.starts_with(stem))
     {
         return false;

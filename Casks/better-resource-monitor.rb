@@ -12,7 +12,7 @@ cask "better-resource-monitor" do
     strategy :github_latest
   end
 
-  depends_on macos: ">= :ventura"
+  depends_on macos: :ventura
 
   app "Better Resource Monitor.app"
 

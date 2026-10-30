@@ -79,7 +79,7 @@ Get it from the <a href="https://apps.apple.com/app/better-resource-monitor/id67
 
 ```bash
 brew tap alexx855/better-resource-monitor https://github.com/alexx855/better-resource-monitor
-brew install --cask better-resource-monitor
+brew install --cask alexx855/better-resource-monitor/better-resource-monitor
 ```
 
 `brew upgrade --cask better-resource-monitor` picks up new versions once the cask is bumped.

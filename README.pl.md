@@ -65,6 +65,8 @@ Nie. Został zaprojektowany tak, by działać w tle przy bardzo niskim wpływie 
 
 Gdy opcja **Pokaż kolory ostrzeżeń** jest włączona, ikona na pasku menu zmienia kolor na pomarańczowy, kiedy widoczne użycie CPU, pamięci lub GPU osiągnie **81%** albo gdy ilość wolnego miejsca na dysku spadnie poniżej **10 GB**. Wraca do normalnego wyglądu, gdy wskaźniki procentowe są poniżej 81%, a na dysku jest co najmniej 10 GB wolnego miejsca.
 
+Ostrzeżenie o wolnym miejscu dotyczy dysku wybranego w podmenu **Dysk**. Domyślnie monitorowany jest dysk zawierający folder domowy użytkownika.
+
 Alerty są wyłącznie wizualne. Prędkość sieci i ukryte wskaźniki ich nie wywołują. Próg jest stały, ale kolory ostrzeżeń można wyłączyć w menu na pasku.
 
 

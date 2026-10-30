@@ -6,7 +6,7 @@ ogImage: "/images/og-privacy-pl.png"
 
 # Polityka prywatności
 
-**Ostatnia aktualizacja: 29 października 2026**
+**Ostatnia aktualizacja: 30 października 2026**
 
 ## Informacje ogólne
 
@@ -22,7 +22,7 @@ Aplikacja działa w całości lokalnie na Twoim urządzeniu. Wszystkie informacj
 - nigdy nieprzesyłane na żadne zewnętrzne serwery,
 - nigdy niezapisywane w żadnej zewnętrznej bazie danych.
 
-Użycie dysku jest obliczane na podstawie całkowitej i wolnej pojemności głównego woluminu użytkownika, zgłaszanej przez system operacyjny. Aplikacja nie odczytuje nazw plików, zawartości plików, woluminów zewnętrznych ani szczegółów poszczególnych woluminów.
+Użycie dysku jest obliczane na podstawie całkowitej i wolnej pojemności wybranego woluminu lokalnego, zgłaszanej przez system operacyjny. Domyślnie jest to wolumin zawierający folder domowy użytkownika. Aby udostępnić wybór dysku, Aplikacja odczytuje nazwy, punkty montowania i pojemność obsługiwanych, zamontowanych woluminów lokalnych, w tym dysków zewnętrznych. Wybrany punkt montowania jest zapisywany lokalnie jako preferencja. Aplikacja nie odczytuje nazw plików ani ich zawartości.
 
 ## Przechowywanie danych
 

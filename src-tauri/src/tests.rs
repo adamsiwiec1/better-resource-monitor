@@ -648,6 +648,10 @@ fn test_storage_disk_translations_match_supported_locales() {
             ],
         ),
         (i18n::Language::Chinese, ["存储磁盘", "启动磁盘", "未连接"]),
+        (
+            i18n::Language::Polish,
+            ["Dysk", "Dysk startowy", "niepodłączony"],
+        ),
     ];
 
     for (language, expected) in expected {

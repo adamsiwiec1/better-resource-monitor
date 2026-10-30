@@ -38,7 +38,7 @@
     {
       "id": "privacy",
       "question": "Czy zbiera jakiekolwiek dane?",
-      "answer": "Nie. Zero żądań sieciowych, zero analityki, zero telemetrii. Wszystko zostaje na Twoim komputerze. Użycie dysku jest obliczane lokalnie na podstawie całkowitej i wolnej pojemności głównego woluminu, zgłaszanej przez system; aplikacja nie odczytuje nazw ani zawartości plików, woluminów zewnętrznych ani szczegółów poszczególnych woluminów. Kod źródłowy jest na GitHubie, jeśli chcesz to sprawdzić samodzielnie."
+      "answer": "Nie. Zero żądań sieciowych, zero analityki, zero telemetrii. Wszystko zostaje na Twoim komputerze. Użycie dysku jest obliczane na podstawie całkowitej i wolnej pojemności wybranego woluminu lokalnego, zgłaszanej przez system. Domyślnie jest to wolumin zawierający folder domowy użytkownika. Wybór dysku wymaga odczytania nazw, punktów montowania i pojemności woluminów lokalnych, w tym dysków zewnętrznych; aplikacja nie odczytuje nazw ani zawartości plików. Kod źródłowy jest na GitHubie, jeśli chcesz to sprawdzić samodzielnie."
     },
     {
       "id": "comparison",
